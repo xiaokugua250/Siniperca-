@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	"github.com/operator-framework/operator-sdk/pkg/status"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,7 +28,7 @@ import (
 type MemcachedSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-
+	Size int32 `json:"size"`
 	// Foo is an example field of Memcached. Edit Memcached_types.go to remove/update
 	Foo string `json:"foo,omitempty"`
 }
@@ -36,12 +37,16 @@ type MemcachedSpec struct {
 type MemcachedStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	// Conditions represent the latest available observations of an object's state
+	Conditions status.Conditions `json:"conditions"`
+	Nodes      []string          `json:"nodes"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 
 // Memcached is the Schema for the memcacheds API
+// +kubebuilder:resource:path=memcacheds,scope=Cluster
 type Memcached struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
