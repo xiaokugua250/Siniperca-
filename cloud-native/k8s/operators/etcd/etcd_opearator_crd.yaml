@@ -1,0 +1,117 @@
+apiVersion: etcd.database.coreos.com/v1beta2
+kind: EtcdCluster
+metadata:
+  name: example-etcd-cluster
+spec:
+  size: 3
+  version: 3.1.10
+
+
+---
+
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: etcdclusters.etcd.database.coreos.com
+  namespace: etcd-opeartor
+spec:
+  group: etcd.databases.coreos.com
+  names:
+    kind: EtcdCluster
+    listKind: EtcdClusterList
+    plural: etcdclusters
+    shortNames:
+      - etcdclus
+      - etcd
+    singular: etcdcluster
+  scope: Namespaced
+  versions:
+    - name: v1beta2
+      served: true
+      storage: true
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: etcd-opeartor-sa
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: etcd-opearator-role
+rules:
+  - apiGroups:
+      - etcd.database.coreos.com
+    resources:
+      - etcdclusters
+      - etcdbackups
+      - etcdrestores
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - services
+      - endpoints
+      - persistentvolumeclaims
+      - events
+    verbs:
+        - '*'
+
+  - apiGroups:
+       - apps
+    resources:
+      - deployments
+    verbs:
+      - '*'
+  - apiGroups:
+       - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: etcd-operator-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: etcd-operatore-role
+subjects:
+  - kind: ServiceAccount
+    name: etcd-opeartor-sa
+    namespace: default
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: etcdoperator
+  name: etcd-operator
+spec:
+  replicas: 1
+  selector:
+    name: etcd-opeartor
+  template:
+    name: etcd-opeartor
+    spec:
+      containers:
+        - name: etcd-operator
+          image: quay.io/coreos/etcd-opeartor:v0.9.4
+          command:
+            - etcd-opeartor
+            - --create-crd=false
+          [...]
+          imagePullPolicy: IfNotPresent
+      serviceAccountName: etcd-opeartor-sa
+

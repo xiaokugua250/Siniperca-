@@ -1,0 +1,8 @@
+domain: my.domain
+layout: helm.sdk.operatorframework.io/v1
+projectName: visitor-site
+resources:
+- group: demo
+  kind: Visitor-site
+  version: v1
+version: 3-alpha
