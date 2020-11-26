@@ -1,0 +1,7 @@
+apiVersion: clusterapp.panda.com/v1
+kind: DataBase
+metadata:
+  name: database-sample
+spec:
+  # Add fields here
+  foo: bar

@@ -1,0 +1,7 @@
+domain: panda.com
+repo: Siniperca
+resources:
+- group: clusterapp
+  kind: DataBase
+  version: v1
+version: "2"
