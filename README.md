@@ -11,5 +11,6 @@
 * 数据库
 * shell
 * linux
+* C 
 
 
