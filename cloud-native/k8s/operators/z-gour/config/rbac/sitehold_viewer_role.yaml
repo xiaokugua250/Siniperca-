@@ -1,0 +1,20 @@
+# permissions for end users to view siteholdren.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sitehold-viewer-role
+rules:
+- apiGroups:
+  - webapp.z-gour.com
+  resources:
+  - siteholdren
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - webapp.z-gour.com
+  resources:
+  - siteholdren/status
+  verbs:
+  - get

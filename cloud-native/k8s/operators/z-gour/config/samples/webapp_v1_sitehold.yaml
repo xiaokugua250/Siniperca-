@@ -1,0 +1,7 @@
+apiVersion: webapp.z-gour.com/v1
+kind: Sitehold
+metadata:
+  name: sitehold-sample
+spec:
+  # Add fields here
+  foo: bar

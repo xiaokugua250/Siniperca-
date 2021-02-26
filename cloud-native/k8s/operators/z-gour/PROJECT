@@ -1,0 +1,7 @@
+domain: z-gour.com
+repo: Siniperca
+resources:
+- group: webapp
+  kind: Sitehold
+  version: v1
+version: "2"
