@@ -34,13 +34,33 @@ spec:
         spec:
           description: SiteholdSpec defines the desired state of Sitehold
           properties:
+            db-service:
+              type: string
             foo:
               description: Foo is an example field of Sitehold. Edit Sitehold_types.go
                 to remove/update
               type: string
+            front-end:
+              items:
+                type: string
+              type: array
+            micro-service:
+              items:
+                type: string
+              type: array
+            nginx-service:
+              type: string
           type: object
         status:
           description: SiteholdStatus defines the observed state of Sitehold
+          properties:
+            status:
+              description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                of cluster Important: Run "make" to regenerate code after modifying
+                this file'
+              type: string
+          required:
+          - status
           type: object
       type: object
   version: v1

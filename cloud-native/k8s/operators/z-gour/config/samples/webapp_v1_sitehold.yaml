@@ -5,3 +5,5 @@ metadata:
 spec:
   # Add fields here
   foo: bar
+  DBService: mysql_db
+  MicroServices: ["k8s","key"]

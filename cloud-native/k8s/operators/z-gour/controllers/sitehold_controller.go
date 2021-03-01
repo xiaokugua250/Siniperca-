@@ -18,9 +18,9 @@ package controllers
 
 import (
 	"context"
-
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
+	"log"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -42,7 +42,20 @@ func (r *SiteholdReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	_ = r.Log.WithValues("sitehold", req.NamespacedName)
 
 	// your logic here
+	ctx := context.Background()
+	_ = r.Log.WithValues("apiexample", req.NamespacedName)
 
+	obj := &webappv1.Sitehold{}
+	if err := r.Get(ctx, req.NamespacedName, obj); err != nil {
+		log.Println(err, "unable to fetch Obj")
+	} else {
+		log.Println("greeting from kubebuilder to", obj.Spec.DBService, obj.Spec.MicroServices)
+	}
+	obj.Status.Status = "Running"
+	if err := r.Status().Update(ctx, obj); err != nil {
+		log.Println("unable to update status....")
+
+	}
 	return ctrl.Result{}, nil
 }
 

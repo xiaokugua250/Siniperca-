@@ -29,11 +29,11 @@ type SiteholdSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Sitehold. Edit Sitehold_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
-	DBService string `json:"db-service,omitempty"`
-	NginxService string `json:"nginx-service,omitempty`
+	Foo           string   `json:"foo,omitempty"`
+	DBService     string   `json:"db-service,omitempty"`
+	NginxService  string   `json:"nginx-service,omitempty"`
 	MicroServices []string `json:"micro-service,omitempty"`
-	FrontEnd []string `json:"front-end,omitempty"`
+	FrontEnd      []string `json:"front-end,omitempty"`
 }
 
 // SiteholdStatus defines the observed state of Sitehold
@@ -41,7 +41,6 @@ type SiteholdStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 	Status string `json:"status"`
-	
 }
 
 // +kubebuilder:object:root=true
