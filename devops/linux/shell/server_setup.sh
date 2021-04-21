@@ -21,10 +21,13 @@ if [ X"$UNAME" = X"linux" ];then
     SERVER_OS=$ID
 else
   echo  -e "\033platform is not linux,script not support now...:[0m"
+  exit 2
 
 fi
 
-	# 更改源设置
+# 更改源设置
+# ubuntu 参考源 https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
+# centos 参考源 https://mirrors.tuna.tsinghua.edu.cn/help/centos/
 source_setup(){
 	echo -e "\033[3xm setup linux server source configs....\033[0m"
 }
@@ -33,8 +36,10 @@ update_setup(){
 		echo -e "\033[3xm setup linux server security configs....\033[0m"
     if [ X$SERVER_OS = X"ubuntu" ];then
       echo "begin to update ubuntu"
-    elif [ X$SERVER_OS = X"Centos" ];then
+      apt-get update  && apt-get upgrade -y
+    elif [ X$SERVER_OS = X"centos" ];then
       echo "begin to update centos"
+      yum makecache && yum update -y 
     else
       echo "os $SERVER_OS not support now..."
     fi
@@ -42,9 +47,17 @@ update_setup(){
 
 
 	# 服务器安全设置，包括端口修改，root账户禁止登录，关闭selinux
-	#
+	# 检查
+  # 参考：https://blog.csdn.net/weixin_40816738/article/details/104471653
 security_setup(){
 	echo -e "\033[3xm setup linux server security configs....\033[0m"
+
+  if [ X"$SERVER_OS" = X"centos"];then
+    sed -i 's/enforcing/disabled/g' /etc/selinux/config
+    echo -e "\033[3xm disable centos selinux successfully....\033[0m"
+  fi
+  
+
 
 }
 
@@ -53,6 +66,16 @@ security_setup(){
 	# 服务器时间和日期设置，包括时区，ntp服务等
 timezone_setup(){
 	echo -e "\033[3xm setup linux server time-zone configs....\033[0m"
+  timedatectl set-local-rtc 0 && timedatectl set-timezone Asia/Shanghai # 设置时区不区分系统版本
+  if [ X$SERVER_OS = X"ubuntu" ];then
+      echo "begin to setup ntp"
+      apt-get install ntp -y && timedatectl set-ntp true  # 设置了时钟同步，需要主要的是要修改/etc/ntp.conf 来设置时钟同步服务器
+    elif [ X$SERVER_OS = X"centos" ];then
+      echo "begin to setup ntp"
+      yum install -y ntp && timedatectl set-ntp true 
+    else
+      echo "os $SERVER_OS not support now..."
+  fi
 
 }
 
@@ -87,9 +110,7 @@ kernel_setup(){
 }
 
 prof_setup(){
-
 	echo -e "\033[3xm setup linux server security configs....\033[0m"
-
 }
 
 
