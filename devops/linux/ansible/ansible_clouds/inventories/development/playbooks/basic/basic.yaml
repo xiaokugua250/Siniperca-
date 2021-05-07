@@ -1,0 +1,17 @@
+# 配置时间服务器，配置进程服务，配置基线文件
+---
+- name: install and config ntp
+  hosts: all
+  vars:
+   ntp_server: [pool.ntp.org, south-america.pool.ntp.org]
+  tasks:
+  - name: install ntp
+    apt: name=ntp update-cache=yes
+  - name: copy the ntp.conf template file
+    template: src=ntp.conf.j2 dest=/etc/ntp.conf
+    notify:
+    - restart ntp
+  handlers:
+  - name: restart ntp
+    service: name=ntp state=restarted
+
