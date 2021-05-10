@@ -1,0 +1,7 @@
+
+tasks:
+ - name:  create system group
+   group:
+    name: docker
+    state: present
+    gid: 1750
