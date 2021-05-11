@@ -2,21 +2,29 @@
 - name: install and config nginx software
   hosts: localhost
   tasks:
-   - name: install nginx
-     apt: name=nginx update_cache=yes
+  - name: install nginx
+    apt: name=nginx update_cache=yes
+  
+  - name:  install develop software
+    apt: pkg={{item}} update_cache=yes cache_valid_time=3600
+    become: true
+    with_items:
+      - git
+      - python-dev
+      - python-pip
+      - redis  
+  - name: config nginx
+    template: src=files/nginx/nginx.conf dest=/etc/nginx/nginx.conf
+    #template: src=files/nginx/nginx.conf.j2 dest=/etc/nginx/nginx.conf
+    # notify: restart nginx
 
-   - name: config nginx
-     template: src=files/nginx/nginx.conf dest=/etc/nginx/nginx.conf
-     #template: src=files/nginx/nginx.conf.j2 dest=/etc/nginx/nginx.conf
-     # notify: restart nginx
-
-   - name: deploy web file
-     template: src=files/nginx/index.html.j2 dest=/usr/share/nginx/html/index.html
-     notify: restart nginx
-
+  - name: deploy web file
+    template: src=files/nginx/index.html.j2 dest=/usr/share/nginx/html/index.html
+    notify: restart nginx
+   
    #- name: restart nginx
    #  service: name=nginx state=restarted
   handlers:
-   - name: restart nginx
-     service: name=nginx state=restarted
+  - name: restart nginx
+    service: name=nginx state=restarted
 
