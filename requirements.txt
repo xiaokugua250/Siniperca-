@@ -44,7 +44,7 @@ PyMySQL==0.9.3
 pyOpenSSL==19.1.0
 python-dateutil==2.8.1
 python-http-client==3.2.4
-python-jwt==2.0.1
+python-jwt==3.3.4
 pytz==2019.3
 queuelib==1.5.0
 requests==2.22.0
