@@ -54,7 +54,7 @@ sib-api-v3-sdk==6.0.3
 six==1.14.0
 sqlparse==0.3.0
 traitlets==4.3.3
-urllib3==1.25.8
+urllib3==1.26.5
 w3lib==1.21.0
 wcwidth==0.1.9
 wrapt==1.11.2
